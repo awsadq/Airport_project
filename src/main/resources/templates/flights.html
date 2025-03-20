@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рейсы</title>
+
+    <link rel="stylesheet" href="/project_css/flights.css">
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#" th:href="@{/}">Airport Travel</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <!-- Главное меню -->
+            <ul class="nav navbar-nav navbar-center">
+                <li><a href="/flights">Рейсы</a></li>
+                <li><a href="/booking">Бронь билетов</a></li>
+                <li><a href="/services">Услуги</a></li>
+                <li><a href="/profile">Личный кабинет</a></li>
+            </ul>
+            <!-- Кнопка "Выйти" -->
+            <ul class="nav navbar-nav navbar-right">
+                <li sec:authorize="isAuthenticated()">
+                    <a href="#" onclick="confirmLogout()" class="btn-logout">Выйти</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header>
+    <h1>Табло рейсов</h1>
+    <form id="search-form" class="search-form">
+        <div class="input-group">
+            <label for="departure-airport">Аэропорт отправления:</label>
+            <select id="departure-airport" name="departureAirport">
+                <option value="ничего">Ничего</option>
+
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="arrival-airport">Аэропорт прибытия:</label>
+            <select id="arrival-airport" name="arrivalAirport">
+                <option value="ничего">Ничего</option>
+
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="status">Статус:</label>
+            <select id="status" name="status">
+                <option value="ничего">Ничего</option>
+                <option value="Вылетел">Вылетел</option>
+                <option value="Задержан">Задержан</option>
+                <option value="Прилетел">Прилетел</option>
+            </select>
+        </div>
+        <button type="submit" class="search-button">Поиск</button>
+    </form>
+
+</header>
+
+<section id="no-flights-message" style="display: none;">
+    <p>Рейсы не найдены. Попробуйте изменить параметры поиска.</p>
+</section>
+
+
+<section id="flights-list">
+    <h2>Доступные рейсы</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>№ Рейса</th>
+            <th>Аэропорт отправления</th>
+            <th>Аэропорт прибытия</th>
+            <th>Время вылета</th>
+            <th>Время прибытия</th>
+            <th>Авиакомпания</th>
+            <th>Статус</th>
+        </tr>
+        </thead>
+        <tbody id="flights-table-body">
+        <!-- Данные рейсов будут отображаться здесь -->
+        </tbody>
+    </table>
+</section>
+
+<div class="background-image-overlay"></div>
+
+<script>
+
+    // Загрузка всех рейсов при загрузке страницы
+    async function loadAllFlights() {
+        try {
+            const response = await fetch('http://localhost:8086/api/flights');
+            if (!response.ok) {
+                console.error('Ошибка загрузки рейсов:', response.statusText);
+                throw new Error('Ошибка загрузки рейсов');
+            }
+            const flights = await response.json();
+
+            // Автозаполнение фильтров, если данные о рейсах доступны
+            if (flights.length > 0) {
+                const departureAirports = [...new Set(flights.map(f => f.departureAirport))];
+                const arrivalAirports = [...new Set(flights.map(f => f.arrivalAirport))];
+                const statuses = [...new Set(flights.map(f => f.status))];
+
+                // Заполнение списка аэропортов и статусов в фильтры
+                const departureInput = document.getElementById('departure-airport');
+                const arrivalInput = document.getElementById('arrival-airport');
+                const statusSelect = document.getElementById('status');
+
+                // Установим "ничего" в качестве первой опции по умолчанию
+                departureInput.innerHTML = `<option value="ничего">Ничего</option>` +
+                    departureAirports.map(airport => `<option value="${airport}">${airport}</option>`).join('');
+                arrivalInput.innerHTML = `<option value="ничего">Ничего</option>` +
+                    arrivalAirports.map(airport => `<option value="${airport}">${airport}</option>`).join('');
+                statusSelect.innerHTML = `<option value="ничего">Ничего</option>` +
+                    statuses.map(status => `<option value="${status}">${status}</option>`).join('');
+            }
+            renderFlights(flights);
+        } catch (error) {
+            console.error('Ошибка при загрузке рейсов:', error);
+        }
+    }
+
+    // Отображение рейсов на странице
+    function renderFlights(flights) {
+        const tbody = document.getElementById('flights-table-body');
+        const noFlightsMessage = document.getElementById('no-flights-message');
+
+        tbody.innerHTML = '';
+        noFlightsMessage.style.display = 'none';  // Скрыть сообщение о том, что рейсы не найдены
+
+        if (flights.length === 0 && params.toString() !== "") {
+            noFlightsMessage.style.display = 'block';
+
+    } else {
+            flights.forEach((flight) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>${flight.flightNumber || 'Нет данных'}</td>
+                <td>${flight.departureAirport || 'Нет данных'}</td>
+                <td>${flight.arrivalAirport || 'Нет данных'}</td>
+                <td>${flight.departureTime || 'Нет данных'}</td>
+                <td>${flight.arrivalTime || 'Нет данных'}</td>
+                <td>${flight.airline || 'Нет данных'}</td>
+                <td>${flight.status || 'Нет данных'}</td>
+            `;
+                tbody.appendChild(row);
+            });
+        }
+    }
+
+    // Поиск рейсов
+    const form = document.getElementById('search-form');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const params = new URLSearchParams();
+
+        formData.forEach((value, key) => {
+            if (value && value !== "ничего") {
+                params.append(key, value);
+            }
+        });
+
+        try {
+            const response = await fetch(`/api/flights/search?${params}`);
+            if (!response.ok) throw new Error(`Ошибка поиска рейсов: ${response.statusText}`);
+            const flights = await response.json();
+            renderFlights(flights);
+        } catch (error) {
+            console.error('Ошибка при поиске рейсов:', error.message);
+            alert('Произошла ошибка при поиске рейсов. Попробуйте еще раз.');
+        }
+    });
+
+    // Загрузка всех рейсов при загрузке страницы
+    window.onload = loadAllFlights;
+
+</script>
+</body>
+</html>

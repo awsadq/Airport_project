@@ -1,0 +1,248 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    border: none;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    padding: 20px 0; /* Увеличиваем верхний и нижний отступы для большей высоты */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #030b23; /* Синий фон */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    height: 30px; /* Устанавливаем фиксированную высоту */
+
+}
+
+.background-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 180%;
+    background: url('https://static.tildacdn.com/tild3266-3935-4161-a462-343736663461/3.jpg') no-repeat center center/cover;
+    z-index: -1; /* Размещаем фон за контентом */
+}
+
+.background-image-overlay::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Темный слой сверху изображения */
+    z-index: -1;
+}
+
+/* Логотип */
+.navbar-brand {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff !important;
+    padding-left: 20px; /* Отступ от левого края */
+    margin-right: 30px;
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+/* Контейнер для меню */
+.navbar-collapse {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    max-height: 300px;
+}
+
+/* Главное меню, выравнивание по центру */
+.navbar-nav.navbar-center {
+    display: flex;
+    justify-content: center; /* Центрируем меню */
+    list-style: none;
+    margin: 0;
+    flex-grow: 1; /* Даем меню возможность растягиваться */
+    margin-left: 500px;
+    margin-top: -18px;
+}
+
+/* Отступы между пунктами меню */
+.navbar-nav li {
+    padding: 0 30px;
+
+}
+/* Стили для ссылок меню */
+.navbar-nav li a {
+    color: #ffffff !important;
+    font-weight: 500;
+    text-align: center;
+    padding: 10px 15px;
+    font-size: 16px;
+    transition: background 0.3s ease-in-out;
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+/* Эффект при наведении */
+.navbar-nav li a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Стили для кнопки "Выйти" */
+.btn-logout {
+    font-size: 16px;
+    padding: 10px 20px;
+    background-color: #081d43;  /* Цвет фона кнопки */
+    color: #fff;  /* Цвет текста */
+    border-radius: 5px;  /* Скругление углов */
+    border: 2px solid #fff;  /* Белая граница шириной 2px */
+    transition: background 0.3s ease, border-color 0.3s ease;  /* Плавное изменение фона и границы */
+    text-decoration: none;  /* Убираем подчеркивание */
+}
+
+/* Эффект при наведении для кнопки "Выйти" */
+.btn-logout:hover {
+    background-color: #0a4163;
+    border: 2px solid #fff;
+}
+
+/* Выравнивание кнопки "Выйти" справа */
+.navbar-nav.navbar-right {
+    display: flex;
+    justify-content: flex-end; /* Выравниваем кнопку "Выйти" справа */
+    position: absolute;
+    right: 20px;
+    margin-top: -15px;
+}
+
+/* Убираем отступы для правой кнопки */
+.navbar-nav.navbar-right li {
+    padding: 0;
+}
+
+header {
+    background-color: transparent;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+    max-height: 1000px;
+}
+
+h1, h2 {
+    margin: 10px 0;
+    margin-top: 100px;
+    color: #ffffff;
+}
+
+.search-form {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+}
+label {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+input[type="text"],
+input[type="datetime-local"],
+select {
+    padding: 8px;
+    border: 1px solid #090909;
+    border-radius: 5px;
+    width: 270px;
+    height: 45px;
+}
+
+.search-button {
+    padding: 10px 20px;
+    background-color: #053d91;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.search-button:hover {
+    background-color: #11304e;
+}
+
+section#flights-list {
+    margin: 20px auto;
+    max-width: 800px;
+    justify-content: center;
+}
+
+section#flights-list h2 {
+    color: white;
+}
+
+table {
+    width: 100%; /* Устанавливаем ширину таблицы на 90% от родительского элемента */
+    max-width: 1800px; /* Устанавливаем максимальную ширину таблицы */
+    min-width: 800px; /* Минимальная ширина таблицы */
+    margin: 20px auto; /* Центрируем таблицу по горизонтали */
+    border-collapse: collapse;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Тень */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 40px;
+}
+
+table:hover {
+    transform: scale(1.02); /* Легкое увеличение при наведении */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4); /* Более глубокая тень при наведении */
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+    color: black; /* Черный цвет текста */
+    background-color: white; /* Белый фон ячеек */
+    transition: background-color 0.3s ease;
+}
+
+table th {
+    background-color: #004080; /* Синий фон для заголовков */
+    color: white; /* Белый цвет текста в заголовках */
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase; /* Заглавные буквы */
+}
+
+table tr:nth-child(even) {
+    background-color: #f3f3f3; /* Светло-серый фон для четных строк */
+}
+
+table tr:hover {
+    background-color: #e0e0e0; /* Серый фон при наведении */
+}
+
+table tr:hover td {
+    color: #004080; /* Темно-синий текст при наведении */
+    font-weight: bold;
+    cursor: pointer; /* Курсор указателя */
+}
+
+table th, table td {
+    text-align: center; /* Выравниваем по центру */
+}
+
+
+
+

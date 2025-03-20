@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Прозрачный фон для navbar */
+.navbar {
+    background-color: transparent !important; /* Прозрачный фон */
+    border: none;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between; /* Логотип слева, меню по центру, logout справа */
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Для логотипа */
+.navbar-brand {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff !important;
+    padding-left: 20px;
+    margin-right: 30px; /* Отступ справа от логотипа */
+    position: absolute; /* Фиксируем логотип слева */
+    left: 20px;
+}
+
+/* Контейнер для меню */
+.navbar-collapse {
+    display: flex;
+    justify-content: center; /* Центрируем контейнер меню */
+    width: 100%; /* Заполняет всю ширину */
+}
+
+/* Меню */
+.navbar-nav {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin-left: 290px; /* Сдвиг вправо */
+}
+
+/* Отступы между пунктами меню */
+.navbar-nav li {
+    padding: 0 15px; /* Отступы между элементами */
+}
+
+/* Стили для ссылок меню */
+.navbar-nav li a {
+    color: #ffffff !important; /* Белый цвет текста */
+    font-weight: 500;
+    text-align: center;
+    padding: 10px 15px;
+    font-size: 16px;
+    transition: background 0.3s ease-in-out;
+}
+
+/* Эффект при наведении */
+.navbar-nav li a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Установка кнопки logout справа */
+.btn-logout {
+    font-size: 16px;
+    padding: 10px 20px;
+    background-color: #0b243c;  /* Цвет фона кнопки */
+    color: #fff;  /* Цвет текста */
+    border-radius: 5px;  /* Скругление углов */
+    border: 2px solid #fff;  /* Белая граница шириной 2px */
+    transition: background 0.3s ease, border-color 0.3s ease;  /* Плавное изменение фона и границы */
+    text-decoration: none;  /* Убираем подчеркивание */
+}
+
+/* Эффект при наведении для кнопки "Выйти" */
+.btn-logout:hover {
+    background-color: #0a4163;
+    border: 2px solid #fff;
+
+}
+
+/* Выравнивание кнопки "Выйти" справа */
+.navbar-nav.navbar-right {
+    display: flex;
+    justify-content: flex-end; /* Выравниваем кнопку "Выйти" справа */
+    position: absolute;
+    right: 20px;
+}
+
+/* Убираем отступы для правой кнопки */
+.navbar-nav.navbar-right li {
+    padding: 0;
+}
+
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: url('https://jetvip.ru/media/plane/72137/v_g700_a_mkt_00001_web_0OpBKB3.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    overflow: hidden;
+}
+
+/* Добавление тени на фоновое изображение */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Полупрозрачная черная тень */
+    z-index: 2; /* Слой тени ниже контента */
+}
+
+/* Контент с текстом */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding-left: 30px;
+    text-align: left; /* Текст слева */
+}
+
+/* Заголовок */
+.hero h1 {
+    font-size: 48px;
+    font-weight: bold;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+/* Текст */
+.hero p {
+    font-size: 22px;
+    font-weight: 300;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+
+.welcome-text {
+    text-align: left;
+    padding: 50px 0;
+}
+
+.welcome-text h1 {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.welcome-text p {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.slider-container {
+    position: relative;
+    max-width: 1400px;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 15px;
+    margin-top: 60px;
+}
+.slider {
+    display: flex;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    gap: 20px;
+    width: 400%; /* Учитываем все 5 слайдов */
+}
+.slide {
+    width: 20%; /* Равномерно распределяем 5 слайдов */
+    flex-shrink: 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 450px;
+    border-radius: 15px;
+    color: white;
+    font-size: 38px;
+    font-weight: bold;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.slide:nth-child(1) { background: #0e4568; }
+.slide:nth-child(2) { background: #0052cc; }
+.slide:nth-child(3) { background: #20abfa; }
+.slide:nth-child(4) { background: #1c2c61; }
+.slide:nth-child(5) { background: #056880; }
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgb(22, 34, 89);
+    color: white;
+    border: none;
+    padding: 25px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 2;
+    transition: background 0.3s ease;
+}
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+.prev { left: 40px; }
+.next { right: 40px; }
+.dots {
+    text-align: center;
+    padding: 15px;
+}
+.dot {
+    height: 16px;
+    width: 16px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+.dot.active { background-color: #007bff; }
