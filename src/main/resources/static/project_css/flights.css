@@ -15,8 +15,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #030b23; /* Синий фон */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: transparent; /* Синий фон */
     height: 30px; /* Устанавливаем фиксированную высоту */
 
 }
@@ -130,12 +129,21 @@ header {
     padding: 20px;
     text-align: center;
     max-height: 1000px;
+    margin-top: 50px;
 }
 
-h1, h2 {
+h1 {
     margin: 10px 0;
     margin-top: 100px;
     color: #ffffff;
+    font-size: 50px;
+}
+
+h2 {
+    margin: 10px 0;
+    margin-top: 100px;
+    color: #ffffff;
+    font-size: 30px;
 }
 
 .search-form {
@@ -144,6 +152,7 @@ h1, h2 {
     flex-wrap: wrap;
     gap: 15px;
     padding: 20px;
+    margin-top: 60px;
 }
 
 .input-group {

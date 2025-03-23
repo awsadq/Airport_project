@@ -1,0 +1,312 @@
+/* Фон и оверлей */
+body {
+    position: relative;
+    min-height: 100vh;
+    background-image: url('https://static.tildacdn.com/tild3266-3935-4161-a462-343736663461/3.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Тёмный оверлей */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 10, 30, 0.7); /* Тёмный слой */
+    z-index: -1; /* чтобы он был позади контента */
+}
+
+.navbar {
+    background-color: transparent;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+/* Контейнер */
+.navbar-container {
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Логотип */
+.navbar-brand {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+    margin-right: 60px;
+}
+
+/* Главное меню */
+.navbar-menu {
+    display: flex;
+    list-style: none;
+    gap: 70px;
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.navbar-menu li a {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 10px 15px;
+    transition: background 0.3s ease;
+}
+
+.navbar-menu li a:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+}
+
+/* Кнопка "Выйти" */
+.navbar-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-right li {
+    padding: 0;
+}
+
+.btn-logout {
+    font-size: 16px;
+    padding: 10px 20px;
+    background-color: #081d43;
+    color: #fff;
+    border-radius: 5px;
+    border: 2px solid #fff;
+    transition: background 0.3s ease, border-color 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-logout:hover {
+    background-color: #0a4163;
+    border-color: #fff;
+}
+
+header {
+    margin-top: 150px; /* расстояние от навбара до заголовка */
+    text-align: center;
+}
+
+header h1 {
+    font-size: 48px;
+    color: #ffffff;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+    letter-spacing: 1px;
+    margin-bottom: 40px;
+    font-weight: bold;
+
+}
+
+.container {
+    max-width: 800px;
+    margin: 100px auto 60px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 102, 153, 0.3);
+    padding: 40px 50px;
+    margin-top: 50px;
+}
+
+h2 {
+    text-align: center;
+    color: #005b99;
+    margin-bottom: 24px;
+}
+
+label {
+    font-weight: bold;
+    color: #004d80;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 18px;
+    border: 1px solid #a8cce6;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+button {
+    padding: 10px 30px;
+    margin-top: 10px;
+    background-color: #12315a;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input:focus, select:focus {
+    border-color: #3399cc;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+button:hover {
+    background-color: #005f99;
+}
+
+#result {
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 16px;
+}
+
+/* 🔷 Форма регистрации на рейс */
+#checkInForm {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 40px 50px;
+    margin: 80px auto;
+    max-width: 600px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 102, 153, 0.25);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 40px;
+    max-height: 500px;
+}
+
+.checkin-title {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 24px;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 70px;
+}
+
+/* Заголовок */
+#checkInForm h2 {
+    text-align: center;
+    color: #005b99;
+    margin-bottom: 24px;
+    font-size: 28px;
+}
+
+/* Метки */
+#checkInForm label {
+    font-weight: bold;
+    color: #004d80;
+    display: block;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+/* Поля ввода */
+#checkInForm input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 14px;
+    border: 1px solid #a8cce6;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+#checkInForm input[type="number"]:focus {
+    border-color: #3399cc;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Checkbox */
+#checkInForm input[type="checkbox"] {
+    margin-right: 8px;
+    transform: scale(1.2);
+}
+
+#checkInForm label[for="baggageStatus"] {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+    margin-top: 10px;
+}
+
+/* Кнопка регистрации */
+#checkInForm button {
+    margin: 25px auto 0;
+    padding: 12px 28px;
+    font-size: 16px;
+    background-color: #0c3d66;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+}
+
+#checkInForm button:hover {
+    background-color: #005f99;
+}
+
+/* Подсказка под номером брони */
+#checkInForm small {
+    color: #888;
+    font-size: 13px;
+    display: block;
+    margin-top: -10px;
+    margin-bottom: 16px;
+}
+
+/* Результат */
+#checkInResult {
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 20px;
+    color: #333; /* по умолчанию */
+}
+
+.download-link {
+    display: block;
+    text-align: center;
+    color: #0077cc;
+    font-weight: bold;
+    margin-top: 10px;
+    text-decoration: none;
+}
+
+.download-link:hover {
+    color: #004f88;
+    text-decoration: underline;
+}
+

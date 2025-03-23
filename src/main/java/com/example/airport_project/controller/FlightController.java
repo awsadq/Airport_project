@@ -1,6 +1,7 @@
 package com.example.airport_project.controller;
 
 import com.example.airport_project.model.Flight;
+import com.example.airport_project.repository.FlightRepository;
 import com.example.airport_project.service.FlightService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,9 @@ public class FlightController {
 
     @Autowired
     private FlightService flightService;
+
+    @Autowired
+    private FlightRepository flightRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(FlightController.class);
 
@@ -64,4 +68,5 @@ public class FlightController {
 
         return flightService.getAllFlights();
     }
+
 }

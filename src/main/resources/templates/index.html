@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Airport Travel</title>
@@ -9,6 +9,9 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
           crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
     <link rel="stylesheet" href="/project_css/index.css">
 </head>
 <body>
@@ -30,6 +33,7 @@
                 <li sec:authorize="isAuthenticated()">
                     <a href="#" onclick="confirmLogout()" class="btn-logout">Выйти</a>
                 </li>
+            </ul>
         </div>
 
     </div>
@@ -39,20 +43,34 @@
     <div class="hero-content">
         <h1>Добро пожаловать в Airport Travel!</h1>
         <p>Бесшовные путешествия, современный комфорт</p>
+
+        <div class="auth-buttons">
+            <a href="/login" class="btn-auth btn-login">Войти</a>
+            <a href="/registration" class="btn-auth btn-register">Зарегистрироваться</a>
+        </div>
     </div>
 </header>
 
-<div class="slider-container">
-    <button class="prev" onclick="moveSlide(-1)"><i class="fa-solid fa-arrow-left"></i></button>
-    <div class="slider">
-        <div class="slide">✈️ Бронирование авиабилетов</div>
-        <div class="slide">🛂 Быстрая регистрация на рейс</div>
-        <div class="slide">🛋️ Комфортный зал ожидания</div>
-        <div class="slide">🛄 Багажный сервис</div>
-        <div class="slide">🍽️ Рестораны в аэропорту</div>
+<div class="slider-wrapper">
+    <button class="slider-btn prev" onclick="moveSlide(-1)">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
+
+    <div class="slider-container">
+        <div class="slider">
+            <div class="slide">✈️ Бронирование авиабилетов</div>
+            <div class="slide">🛂 Быстрая регистрация на рейс</div>
+            <div class="slide">🛋️ Комфортный зал ожидания</div>
+            <div class="slide">🛄 Багажный сервис</div>
+            <div class="slide">🍽️ Рестораны в аэропорту</div>
+        </div>
     </div>
-    <button class="next" onclick="moveSlide(1)"><i class="fa-solid fa-arrow-right"></i></button>
+
+    <button class="slider-btn next" onclick="moveSlide(1)">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>
 </div>
+
 <div class="dots">
     <span class="dot" onclick="currentSlide(0)"></span>
     <span class="dot" onclick="currentSlide(1)"></span>
@@ -61,7 +79,51 @@
     <span class="dot" onclick="currentSlide(4)"></span>
 </div>
 
+<section class="about-section">
+    <div class="about-content">
+        <img src="https://storage.yandexcloud.net/newspressfeed/wp-content/uploads/2020/06/about-us.jpg" alt="О нас" class="about-img">
+        <div class="about-text">
+            <h2>О компании</h2>
+            <p>Airport Travel — это надёжность, комфорт и забота о каждом пассажире.</p>
+            <a href="/about" class="about-button">Подробнее</a>
+        </div>
+    </div>
+</section>
 
+
+<section class="map-section">
+    <h2 class="map-title">Аэропорты Кыргызстана</h2>
+    <div id="map"></div>
+</section>
+
+
+<section class="flights-cta">
+    <div class="flights-cta-content">
+        <h2 class="flights-title">
+            ✈️ Готовы к полёту? Посмотрите доступные рейсы
+        </h2>
+        <a href="/flights" class="flights-button">
+            Смотреть рейсы
+        </a>
+    </div>
+</section>
+
+<section class="news-section">
+    <h2 class="news-title-centered">НОВОСТИ</h2>
+    <div class="news-container">
+        <div class="news-card" th:each="item : ${news}">
+            <img th:src="${item.imageUrl}" alt="Новость" class="news-image">
+            <div class="news-content">
+                <p class="news-date" th:text="${item.publishedAt}"></p>
+                <h4 class="news-header" th:text="${item.title}"></h4>
+                <p class="news-description" th:text="${item.description}"></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -102,6 +164,32 @@
     updateSlider();
 
 </script>
+
+<script>
+    const map = L.map('map').setView([41.5, 74.6], 7); // Центр на Кыргызстан
+
+    // Светлая современная тема
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 19
+    }).addTo(map);
+
+    // Маркеры аэропортов
+    const airports = [
+        { name: "Манас (Бишкек)", coords: [43.061, 74.477] },
+        { name: "Ошский аэропорт", coords: [40.608, 72.793] },
+        { name: "Иссык-Куль", coords: [42.585, 76.713] },
+        { name: "Баткен", coords: [40.063, 70.815] },
+        { name: "Джалал-Абад", coords: [40.942, 73.002] }
+    ];
+
+    airports.forEach(airport => {
+        L.marker(airport.coords).addTo(map).bindPopup(`<b>${airport.name}</b>`);
+    });
+</script>
+
 
 </body>
 </html>

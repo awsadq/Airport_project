@@ -43,8 +43,17 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()  // 💥 Отключаем CSRF-защиту для тестов
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/registration**", "/project_js/**", "/project_css/**", "/project_images/**", "/api/flights").permitAll()
+                        .requestMatchers(
+                                "/registration**",
+                                "/project_js/**",
+                                "/project_css/**",
+                                "/project_images/**",
+                                "/api/flights",
+                                "/api/bookings",
+                                "/booking/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
@@ -60,4 +69,5 @@ public class SecurityConfiguration {
                 );
         return http.build();
     }
+
 }

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Бронирование билета</title>
+    <link rel="stylesheet" href="project_css/booking.css">
+
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-container">
+        <a class="navbar-brand" href="/" th:href="@{/}">Airport Travel</a>
+
+        <ul class="navbar-menu">
+            <li><a href="/flights">Рейсы</a></li>
+            <li><a href="/booking">Бронь билетов</a></li>
+            <li><a href="/services">Услуги</a></li>
+            <li><a href="/profile">Личный кабинет</a></li>
+        </ul>
+
+        <ul class="navbar-right">
+            <li sec:authorize="isAuthenticated()">
+                <a href="#" onclick="confirmLogout()" class="btn-logout">Выйти</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<header>
+    <h1>Бронирование билетов</h1>
+</header>
+
+<div class="container">
+    <h2>Форма бронирования</h2>
+    <form id="bookingForm">
+        <label for="passengerName">ФИО пассажира:</label>
+        <input type="text" id="passengerName" name="passengerName" required>
+
+        <label for="passportNumber">Номер паспорта:</label>
+        <input type="text" id="passportNumber" name="passportNumber" required>
+
+        <label for="flight">Выберите рейс:</label>
+        <select id="flight" name="flightId" required>
+            <option value="">Загрузка рейсов...</option>
+        </select>
+
+        <label for="seatNumber">Номер места (например, A1):</label>
+        <input type="text" id="seatNumber" name="seatNumber">
+
+        <button type="submit">Забронировать</button>
+    </form>
+
+    <div id="result"></div>
+</div>
+
+<div id="flightInfo" style="
+    margin: 20px auto;
+    padding: 15px;
+    border: 1px solid #cceeff;
+    border-radius: 8px;
+    background: #f3faff;
+    width: 400px;
+    text-align: left;
+    display: none;">
+    <p><strong>✈️ Рейс:</strong> <span id="infoNumber"></span></p>
+    <p><strong>🛫 Откуда:</strong> <span id="infoFrom"></span></p>
+    <p><strong>🛬 Куда:</strong> <span id="infoTo"></span></p>
+    <p><strong>🕒 Вылет:</strong> <span id="infoDeparture"></span></p>
+    <p><strong>⏳ До вылета:</strong> <span id="infoCountdown"></span></p>
+</div>
+
+
+<div class="checkin-title">Регистрация на рейс</div>
+
+<form id="checkInForm">
+    <label for="bookingId">Номер бронирования:</label>
+    <input type="number" id="bookingId" name="bookingId" required placeholder="Введите номер, выданный после брони">
+    <small>Найти можно после успешной брони выше 👆</small>
+
+    <label>
+        <input type="checkbox" id="baggageStatus" name="baggageStatus">
+        Зарегистрирован багаж
+    </label>
+
+    <button type="submit">Зарегистрироваться</button>
+
+    <div id="checkInResult"></div>
+
+    <!-- 📥 Кнопка для скачивания PDF -->
+    <a id="downloadBoardingPass" href="#" style="display:none; color: #005b99; font-weight: bold;" download>
+        📄 Скачать посадочный талон (PDF)
+    </a>
+</form>
+
+
+<script>
+    document.getElementById('checkInForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const bookingId = document.getElementById('bookingId').value.trim();
+        const baggageStatus = document.getElementById('baggageStatus').checked;
+        const result = document.getElementById('checkInResult');
+        const downloadLink = document.getElementById('downloadBoardingPass');
+
+        result.innerText = '';
+        result.style.color = '';
+        downloadLink.style.display = 'none';
+
+        if (!bookingId || isNaN(bookingId) || bookingId <= 0) {
+            result.innerText = '❌ Пожалуйста, введите корректный номер бронирования!';
+            result.style.color = 'red';
+            return;
+        }
+
+        const payload = { bookingId: Number(bookingId), baggageStatus };
+
+        try {
+            const res = await fetch('/api/check-in', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                result.innerText = '✅ Вы успешно зарегистрированы!';
+                result.style.color = 'green';
+
+                // Показываем кнопку для скачивания PDF
+                downloadLink.href = `/api/check-in/${bookingId}/boarding-pass`;
+                downloadLink.style.display = 'block';
+
+            } else {
+                const errorText = await res.text();
+                result.innerText = '❌ Ошибка: ' + errorText;
+                result.style.color = 'red';
+            }
+        } catch (err) {
+            console.error("Ошибка:", err);
+            result.innerText = '❌ Сетевая ошибка. Повторите попытку позже.';
+            result.style.color = 'red';
+        }
+    });
+
+</script>
+
+<script>
+    const flightsMap = new Map();
+    const flightSelect = document.getElementById('flight');
+
+    fetch('/api/flights')
+        .then(res => res.json())
+        .then(data => {
+            console.log("📥 Список рейсов:", data);
+            flightSelect.innerHTML = '<option value="">Выберите рейс...</option>';
+
+            data.forEach(flight => {
+                flightsMap.set(flight.id, flight);
+
+                const option = document.createElement('option');
+                option.value = flight.id;
+                option.text = `${flight.flightNumber} | ${flight.departureAirport} → ${flight.arrivalAirport} | ${flight.departureTime}`;
+                flightSelect.appendChild(option);
+            });
+
+            // ✅ Обработчик выбора рейса
+            flightSelect.addEventListener('change', () => {
+                const selectedId = Number(flightSelect.value);
+                const flight = flightsMap.get(selectedId);
+                const infoBlock = document.getElementById('flightInfo');
+
+                if (!flight) {
+                    infoBlock.style.display = 'none';
+                    return;
+                }
+
+                document.getElementById('infoNumber').innerText = flight.flightNumber;
+                document.getElementById('infoFrom').innerText = flight.departureAirport;
+                document.getElementById('infoTo').innerText = flight.arrivalAirport;
+
+                const departureTime = flight.departureTime; // "15:10"
+                const departureDateStr = flight.departureDate; // "2025-03-22"
+
+                const fullDateTimeStr = `${departureDateStr}T${departureTime}`;
+                const departureDate = new Date(fullDateTimeStr);
+
+                if (isNaN(departureDate.getTime())) {
+                    document.getElementById('infoDeparture').innerText = 'Неверный формат даты';
+                    document.getElementById('infoCountdown').innerText = '—';
+                    infoBlock.style.display = 'block';
+                    return;
+                }
+
+                // Показ даты в человеко-читаемом формате
+                const formattedDate = departureDate.toLocaleString('ru-RU', {
+                    day: '2-digit', month: '2-digit', year: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                });
+                document.getElementById('infoDeparture').innerText = formattedDate;
+
+                const countdownSpan = document.getElementById('infoCountdown');
+                const targetTime = departureDate.getTime();
+
+                clearInterval(window.departureTimer);
+                function updateCountdown() {
+                    const now = new Date().getTime();
+                    const diff = targetTime - now;
+
+                    if (diff <= 0) {
+                        countdownSpan.innerText = "✅ Рейс доступен для бронирования";
+                        clearInterval(window.departureTimer);
+                    } else {
+                        const hours = Math.floor(diff / (1000 * 60 * 60));
+                        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                        countdownSpan.innerText = `${hours} ч ${minutes} мин`;
+                    }
+                }
+
+                updateCountdown();
+                window.departureTimer = setInterval(updateCountdown, 1000);
+
+                infoBlock.style.display = 'block';
+            });
+
+        })
+        .catch(error => {
+            console.error("Ошибка загрузки рейсов:", error);
+            document.getElementById('result').innerText = '❌ Не удалось загрузить рейсы.';
+            document.getElementById('result').style.color = 'red';
+        });
+
+
+    // 📤 Отправка формы бронирования
+    document.getElementById('bookingForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const passengerName = document.getElementById('passengerName').value.trim();
+        const passportNumber = document.getElementById('passportNumber').value.trim();
+        const flightIdStr = document.getElementById('flight').value.trim();
+        const seatNumber = document.getElementById('seatNumber').value.trim();
+
+        if (!passengerName || !passportNumber || !flightIdStr) {
+            alert("❌ Все поля (кроме места) должны быть заполнены!");
+            return;
+        }
+
+        const flightId = Number(flightIdStr);
+        if (isNaN(flightId) || flightId <= 0) {
+            alert("❌ Ошибка: неверный формат рейса!");
+            return;
+        }
+
+        const payload = {
+            passengerName,
+            passportNumber,
+            flightId,
+            seatNumber
+        };
+
+        console.log("📤 Отправляемые данные:", payload);
+
+        try {
+            const response = await fetch('/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(payload)
+            });
+
+            const result = document.getElementById('result');
+            if (response.ok) {
+                const data = await response.text(); // ← сервер должен возвращать ID или сообщение
+                result.style.color = 'green';
+                result.innerText = `✅ Бронирование успешно!\nВаш номер бронирования: ${data}`;
+            } else {
+                const err = await response.text();
+                result.style.color = 'red';
+                result.innerText = '❌ Ошибка: ' + err;
+            }
+        } catch (error) {
+            console.error("❌ Ошибка сети:", error);
+            document.getElementById('result').style.color = 'red';
+            document.getElementById('result').innerText = '❌ Ошибка сети: ' + error;
+        }
+    });
+</script>
+
+
+</body>
+</html>

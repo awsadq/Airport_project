@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>О нас - Airport Travel</title>
+  <link rel="stylesheet" href="/project_css/about.css">
+</head>
+<body>
+
+<section class="about-hero">
+  <h1>О компании</h1>
+  <p>Познакомьтесь с нашей историей и командой.</p>
+</section>
+
+<section class="cards-section">
+  <div class="cards-container">
+    <div class="card" th:each="item : ${cards}">
+      <img th:src="${item.imageUrl}" alt="Фото" class="card-image">
+      <div class="card-content">
+        <h3 th:text="${item.title}"></h3>
+        <p th:text="${item.description}"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
