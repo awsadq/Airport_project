@@ -8,6 +8,8 @@ import com.example.airport_project.web.dto.CheckInDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/check-in")
@@ -34,16 +36,20 @@ public class CheckInController {
     }
 
     // 📄 Получение PDF посадочного талона
-    @GetMapping("/{id}/boarding-pass")
-    public ResponseEntity<byte[]> getBoardingPass(@PathVariable Long id) {
-        CheckIn checkIn = checkInRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Регистрация не найдена"));
+    @GetMapping("/{bookingId}/boarding-pass")
+    public ResponseEntity<byte[]> getBoardingPass(@PathVariable Long bookingId) {
+        CheckIn checkIn = checkInRepository.findByBookingId(bookingId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Регистрация не найдена"));
 
         byte[] pdf = boardingPassGenerator.generatePdf(checkIn);
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=boarding-pass.pdf")
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(pdf);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.builder("attachment")
+                .filename("boarding-pass.pdf")
+                .build());
+
+        return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
     }
+
 }

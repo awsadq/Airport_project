@@ -87,10 +87,6 @@
 
     <div id="checkInResult"></div>
 
-    <!-- 📥 Кнопка для скачивания PDF -->
-    <a id="downloadBoardingPass" href="#" style="display:none; color: #005b99; font-weight: bold;" download>
-        📄 Скачать посадочный талон (PDF)
-    </a>
 </form>
 
 
@@ -101,11 +97,9 @@
         const bookingId = document.getElementById('bookingId').value.trim();
         const baggageStatus = document.getElementById('baggageStatus').checked;
         const result = document.getElementById('checkInResult');
-        const downloadLink = document.getElementById('downloadBoardingPass');
 
         result.innerText = '';
         result.style.color = '';
-        downloadLink.style.display = 'none';
 
         if (!bookingId || isNaN(bookingId) || bookingId <= 0) {
             result.innerText = '❌ Пожалуйста, введите корректный номер бронирования!';
@@ -115,6 +109,7 @@
 
         const payload = { bookingId: Number(bookingId), baggageStatus };
 
+        // Пробуем зарегистрировать
         try {
             const res = await fetch('/api/check-in', {
                 method: 'POST',
@@ -122,18 +117,25 @@
                 body: JSON.stringify(payload)
             });
 
+            const pdfUrl = `/api/check-in/${bookingId}/boarding-pass`;
+
             if (res.ok) {
-                result.innerText = '✅ Вы успешно зарегистрированы!';
+                result.innerText = '✅ Вы успешно зарегистрированы! Ваш талон сейчас скачается.';
                 result.style.color = 'green';
 
-                // Показываем кнопку для скачивания PDF
-                downloadLink.href = `/api/check-in/${bookingId}/boarding-pass`;
-                downloadLink.style.display = 'block';
-
+                await downloadPdf(pdfUrl);
             } else {
                 const errorText = await res.text();
-                result.innerText = '❌ Ошибка: ' + errorText;
-                result.style.color = 'red';
+
+                if (errorText.includes("уже зарегистрирован")) {
+                    result.innerText = 'ℹ️ Вы уже зарегистрированы. Загружаем посадочный талон повторно...';
+                    result.style.color = 'blue';
+
+                    await downloadPdf(pdfUrl);
+                } else {
+                    result.innerText = '❌ Ошибка: ' + errorText;
+                    result.style.color = 'red';
+                }
             }
         } catch (err) {
             console.error("Ошибка:", err);
@@ -142,7 +144,28 @@
         }
     });
 
+    async function downloadPdf(pdfUrl) {
+        try {
+            const response = await fetch(pdfUrl);
+            if (!response.ok) throw new Error("Не удалось получить посадочный талон.");
+
+            const blob = await response.blob();
+            const blobUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = 'boarding-pass.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(blobUrl);
+        } catch (err) {
+            const result = document.getElementById('checkInResult');
+            result.innerText = '❌ Ошибка при скачивании PDF: ' + err.message;
+            result.style.color = 'red';
+        }
+    }
 </script>
+
 
 <script>
     const flightsMap = new Map();

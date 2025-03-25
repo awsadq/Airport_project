@@ -232,15 +232,15 @@ body {
     height: 420px;
     border-radius: 15px;
     color: white;
-    font-size: 36px;
+    font-size: 40px;
     font-weight: bold;
 }
 
 .slide:nth-child(1) { background: #0e4568; }
-.slide:nth-child(2) { background: #0052cc; }
-.slide:nth-child(3) { background: #20abfa; }
-.slide:nth-child(4) { background: #1c2c61; }
-.slide:nth-child(5) { background: #056880; }
+.slide:nth-child(2) { background: #053c8e; }
+.slide:nth-child(3) { background: #0e4568; }
+.slide:nth-child(4) { background: #053c8e; }
+.slide:nth-child(5) { background: #0e4568; }
 
 /* ⬅️➡️ Стрелки вне слайдера */
 .slider-btn {
@@ -486,7 +486,7 @@ body {
 
 .about-button {
     padding: 12px 24px;
-    background-color: #007bff;
+    background-color: #034995;
     color: white;
     border-radius: 30px;
     text-decoration: none;
@@ -495,9 +495,35 @@ body {
 }
 
 .about-button:hover {
-    background-color: #0056b3;
+    background-color: #057bae;
     transform: scale(1.05);
     color: white;
+}
+
+.footer {
+    background: linear-gradient(135deg, #03315e, #45728e);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    transition: background 0.3s ease;
+}
+.footer-title {
+    font-size: 3.3rem;
+    font-weight: 600;
+}
+
+.small{
+    font-size: 17px;
+}
+.footer a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+    font-size: 18px;
+}
+.footer a:hover {
+    color: #074275 !important;
+    text-decoration: underline;
 }
 
 
