@@ -11,7 +11,6 @@
           crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
     <link rel="stylesheet" href="/project_css/index.css">
 </head>
 <body>
@@ -122,26 +121,27 @@
     </div>
 </section>
 
-<footer class="footer mt-5 text-light">
-    <div class="container py-4">
-        <div class="row">
-            <div class="col-md-6 mb-3 mb-md-0">
-                <h5 class="footer-title">Аэропорт Онлайн</h5>
-                <p class="small">Добро пожаловать в наш цифровой аэропорт! Надёжность, комфорт и доступность — всё в одном месте.</p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <ul class="nav justify-content-md-end">
-                    <li class="nav-item"><a href="/flights" class="nav-link px-2 link-light">Рейсы</a></li>
-                    <li class="nav-item"><a href="/booking" class="nav-link px-2 link-light">Бронь билетов</a></li>
-                    <li class="nav-item"><a href="/services" class="nav-link px-2 link-light">Услуги</a></li>
-                    <li class="nav-item"><a href="/profile" class="nav-link px-2 link-light">Личный кабинет</a></li>
-                </ul>
-            </div>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-left">
+            <h2 class="footer-title">Airport Travel</h2>
+            <p class="footer-description">
+                Добро пожаловать в наш цифровой аэропорт! Надёжность, комфорт<br>
+                и доступность — всё в одном месте.
+            </p>
         </div>
-        <hr class="border-top border-light mt-4">
-        <div class="text-center small">
-            © <?= date("Y") ?> Airport Online. Все права защищены.
+        <div class="footer-right">
+            <ul class="footer-menu">
+                <li><a href="/flights">✈️ Рейсы</a></li>
+                <li><a href="/booking">📄 Бронь билетов</a></li>
+                <li><a href="/services">🛠️ Услуги</a></li>
+                <li><a href="/profile">👤 Личный кабинет</a></li>
+            </ul>
         </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="footer-bottom">
+        © <?= date("Y") ?> Airport Travel. Все права защищены.
     </div>
 </footer>
 

@@ -53,6 +53,35 @@ public class Flight {
     @JsonProperty("departureDate")
     private String departureDate;
 
+    @Column(name = "airline_image")
+    @JsonProperty("airlineImage")
+    private String airlineImage;
+
+    @Column(name = "total_price")
+    @JsonProperty("totalPrice")
+    private Integer totalPrice;
+
+    @Column(name = "total_time")
+    @JsonProperty("totalTime")
+    private String totalTime;
+
+    @Column(name = "stop_count")
+    @JsonProperty("stopCount")
+    private Integer stopCount;
+
+    @Column(name = "transfer_cities")
+    @JsonProperty("transferCities")
+    private String[] transferCities;
+
+    @Column(name = "baggage_hand")
+    @JsonProperty("baggageHand")
+    private String baggageHand;
+
+    @Column(name = "baggage_luggage")
+    @JsonProperty("baggageLuggage")
+    private String baggageLuggage;
+
+
 
     public String getFlightNumber() {
         return flightNumber;
@@ -78,6 +107,15 @@ public class Flight {
                 ", arrivalTime='" + arrivalTime + '\'' +
                 ", status='" + status + '\'' +
                 ", remark='" + remark + '\'' +
+                ", departureDate='" + departureDate + '\'' +
+                ", airlineImage='" + airlineImage + '\'' +
+                ", totalPrice=" + totalPrice +
+                ", totalTime='" + totalTime + '\'' +
+                ", stopCount=" + stopCount +
+                ", transferCities=" + transferCities +
+                ", baggageHand='" + baggageHand + '\'' +
+                ", baggageLuggage='" + baggageLuggage + '\'' +
+
                 '}';
     }
 }

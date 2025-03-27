@@ -48,7 +48,7 @@ body::before {
 
 /* Логотип */
 .navbar-brand {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 700;
     color: #ffffff;
     text-decoration: none;
@@ -68,7 +68,7 @@ body::before {
 
 .navbar-menu li a {
     color: #ffffff;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 500;
     text-decoration: none;
     padding: 10px 15px;
@@ -309,4 +309,82 @@ button:hover {
     color: #004f88;
     text-decoration: underline;
 }
+
+.footer {
+    background: linear-gradient(135deg, #02234e, #2d4f63);
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    padding: 20px 20px 5px; /* ещё короче футер */
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    margin-top: 130px;
+}
+
+.footer-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.footer-title {
+    font-size: 2.1rem; /* уменьшен размер названия */
+    margin-bottom: 5px;
+    margin-top: -8px;
+    color: white;
+    padding-right: 420px;
+}
+
+.footer-description {
+    font-size: 17px;
+    line-height: 1.5;
+    margin-top: 6px;
+    padding-right: 80px;
+}
+
+.footer-right {
+    margin-top: 5px;
+    padding-right: 150px; /* сдвигаем меню левее */
+}
+
+.footer-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-menu li {
+    margin-bottom: 8px;
+}
+
+.footer-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 19px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    transition: all 0.3s ease;
+    width: fit-content;
+}
+
+.footer-menu a:hover {
+    background-color: #fff;
+    color: #074275;
+    text-decoration: none;
+}
+
+.footer-divider {
+    margin: 20px auto 5px;
+    border: none;
+    border-top: 3px solid #ffffff88;
+    width: 70%;
+}
+
+.footer-bottom {
+    text-align: center;
+    font-size: 16px;
+}
+
 

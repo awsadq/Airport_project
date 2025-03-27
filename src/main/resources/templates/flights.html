@@ -9,6 +9,8 @@
 </head>
 <body>
 
+<div class="page-container">
+
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -31,6 +33,8 @@
         </div>
     </div>
 </nav>
+
+    <main>
 
 <header>
     <h1>Табло рейсов</h1>
@@ -80,15 +84,49 @@
             <th>Время прибытия</th>
             <th>Авиакомпания</th>
             <th>Статус</th>
+            <th>Цена</th>
+            <th>Длительность</th>
+            <th>Пересадки</th>
+            <th>Города</th>
+            <th>Ручная кладь</th>
+            <th>Багаж</th>
+
         </tr>
         </thead>
         <tbody id="flights-table-body">
-        <!-- Данные рейсов будут отображаться здесь -->
+
         </tbody>
     </table>
 </section>
 
 <div class="background-image-overlay"></div>
+
+    </main>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-left">
+            <h2 class="footer-title">Airport Travel</h2>
+            <p class="footer-description">
+                Добро пожаловать в наш цифровой аэропорт! Надёжность, комфорт<br>
+                и доступность — всё в одном месте.
+            </p>
+        </div>
+        <div class="footer-right">
+            <ul class="footer-menu">
+                <li><a href="/flights">✈️ Рейсы</a></li>
+                <li><a href="/booking">📄 Бронь билетов</a></li>
+                <li><a href="/services">🛠️ Услуги</a></li>
+                <li><a href="/profile">👤 Личный кабинет</a></li>
+            </ul>
+        </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="footer-bottom">
+        © <?= date("Y") ?> Airport Travel. Все права защищены.
+    </div>
+</footer>
+
 
 <script>
 
@@ -142,14 +180,24 @@
             flights.forEach((flight) => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                <td>${flight.flightNumber || 'Нет данных'}</td>
-                <td>${flight.departureAirport || 'Нет данных'}</td>
-                <td>${flight.arrivalAirport || 'Нет данных'}</td>
-                <td>${flight.departureTime || 'Нет данных'}</td>
-                <td>${flight.arrivalTime || 'Нет данных'}</td>
-                <td>${flight.airline || 'Нет данных'}</td>
-                <td>${flight.status || 'Нет данных'}</td>
-            `;
+    <td>${flight.flightNumber || 'Нет данных'}</td>
+    <td>${flight.departureAirport || 'Нет данных'}</td>
+    <td>${flight.arrivalAirport || 'Нет данных'}</td>
+    <td>${flight.departureTime || 'Нет данных'}</td>
+    <td>${flight.arrivalTime || 'Нет данных'}</td>
+    <td>
+        ${flight.airlineImage ? `<img src="${flight.airlineImage}" alt="airline logo" style="width:40px; vertical-align:middle; margin-right:5px;">` : ''}
+        ${flight.airline || 'Нет данных'}
+    </td>
+    <td>${flight.status || 'Нет данных'}</td>
+    <td>${flight.totalPrice ? flight.totalPrice + ' сом' : 'Нет данных'}</td>
+    <td>${flight.totalTime || 'Нет данных'}</td>
+    <td>${flight.stopCount || 0}</td>
+    <td>${flight.transferCities?.join(', ') || '-'}</td>
+    <td>${flight.baggageHand || '-'}</td>
+    <td>${flight.baggageLuggage || '-'}</td>
+`;
+
                 tbody.appendChild(row);
             });
         }
@@ -183,5 +231,7 @@
     window.onload = loadAllFlights;
 
 </script>
+
+</div>
 </body>
 </html>

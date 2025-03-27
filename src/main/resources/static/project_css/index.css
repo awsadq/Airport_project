@@ -24,7 +24,7 @@ body {
 
 /* Для логотипа */
 .navbar-brand {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 700;
     color: #ffffff !important;
     padding-left: 20px;
@@ -59,7 +59,7 @@ body {
     font-weight: 500;
     text-align: center;
     padding: 10px 15px;
-    font-size: 16px;
+    font-size: 18px;
     transition: background 0.3s ease-in-out;
 }
 
@@ -501,29 +501,79 @@ body {
 }
 
 .footer {
-    background: linear-gradient(135deg, #03315e, #45728e);
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
-    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #02234e, #2d4f63);
     color: white;
-    transition: background 0.3s ease;
-}
-.footer-title {
-    font-size: 3.3rem;
-    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    padding: 20px 20px 5px; /* ещё короче футер */
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    margin-top: 80px;
 }
 
-.small{
-    font-size: 17px;
+.footer-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
 }
-.footer a {
+
+.footer-title {
+    font-size: 3.5rem; /* уменьшен размер названия */
+    margin-bottom: 5px;
+    margin-top: -8px;
+    padding-right: 80px;
+}
+
+.footer-description {
+    font-size: 17px;
+    line-height: 1.5;
+    margin-top: 6px;
+    padding-right: 80px;
+}
+
+.footer-right {
+    margin-top: 5px;
+    padding-right: 150px; /* сдвигаем меню левее */
+}
+
+.footer-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-menu li {
+    margin-bottom: 8px;
+}
+
+.footer-menu a {
     color: white;
     text-decoration: none;
-    transition: color 0.3s ease, text-decoration 0.3s ease;
-    font-size: 18px;
+    font-size: 19px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    transition: all 0.3s ease;
+    width: fit-content;
 }
-.footer a:hover {
-    color: #074275 !important;
-    text-decoration: underline;
+
+.footer-menu a:hover {
+    background-color: #fff;
+    color: #074275;
+    text-decoration: none;
+}
+
+.footer-divider {
+    margin: 20px auto 5px;
+    border: none;
+    border-top: 3px solid #ffffff88;
+    width: 70%;
+}
+
+.footer-bottom {
+    text-align: center;
+    font-size: 16px;
 }
 
 
